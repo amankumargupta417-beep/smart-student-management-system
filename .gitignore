@@ -1,0 +1,6 @@
+venv/
+pycache/
+*.py[cod]
+.env
+instance/
+student_management.db
