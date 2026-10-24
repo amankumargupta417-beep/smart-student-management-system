@@ -305,7 +305,7 @@ def init_db():
                 INSERT INTO teachers
                 (
                     user_id,
-                    name,
+                    full_name,
                     username,
                     employee_id,
                     subject,
