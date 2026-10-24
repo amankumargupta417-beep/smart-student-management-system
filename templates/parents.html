@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parents - Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .topbar {
+            background: #ffffff;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .user-info {
+            color: #4b5563;
+            font-size: 14px;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #111827;
+        }
+
+        .header p {
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #111827;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f3f4f6;
+            color: #374151;
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="brand">Smart Student Management System</div>
+
+        <div class="user-info">
+            {{ user_name }} &nbsp; | &nbsp; {{ role }}
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="header">
+            <div>
+                <h1>Parents</h1>
+                <p>View and manage registered parent accounts.</p>
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+<div style="text-align:right; margin-bottom:20px;">
+    <a href="{{ url_for('add_parent') }}"
+       style="background:#2196f3; color:white; padding:12px 20px;
+              border-radius:6px; text-decoration:none; display:inline-block;">
+        + Add Parent
+    </a>
+</div>
+
+
+        <div class="card">
+
+            {% if parents %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Parent Name</th>
+                        <th>Username</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+{% for parent in parents %}
+
+<tr>
+    <td>{{ loop.index }}</td>
+    <td>{{ parent.full_name }}</td>
+    <td>{{ parent.username }}</td>
+    <td>{{ parent.role|title }}</td>
+
+    <td>
+        <span class="status">Active</span>
+    </td>
+
+    <td>
+        <a href="{{ url_for('link_parent_child', parent_id=parent.id) }}"
+           style="background:#2196f3;color:white;padding:8px 12px;border-radius:5px;text-decoration:none;">
+            Link Child
+        </a>
+    </td>
+</tr>
+
+{% endfor %}
+
+
+                </tbody>
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No parent accounts found.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</body>
+</html>

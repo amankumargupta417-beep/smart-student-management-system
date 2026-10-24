@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance - Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: #38bdf8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .brand h2 {
+            font-size: 18px;
+        }
+
+        .brand p {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 3px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            color: #6b7280;
+            margin: 22px 12px 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 14px 15px;
+            border-radius: 10px;
+            margin-bottom: 7px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+        }
+
+        .top {
+            margin-bottom: 30px;
+        }
+
+        .top h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .top p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 15px;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .present {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .absent {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 25px;
+            text-decoration: none;
+            background: #0ea5e9;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 9px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 45px;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .content {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo">SS</div>
+            <div>
+                <h2>Smart Student</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+
+        <div class="section-title">MAIN MENU</div>
+
+        <a href="{{ url_for('student_dashboard') }}" class="nav-link">
+            Dashboard
+        </a>
+
+        <div class="section-title">ACADEMIC</div>
+
+        <a href="{{ url_for('student_attendance') }}" class="nav-link active">
+            Attendance
+        </a>
+
+        <a href="{{ url_for('student_marks') }}" class="nav-link">
+            Marks
+        </a>
+
+        <a href="{{ url_for('student_performance') }}" class="nav-link">
+            Performance
+        </a>
+
+        <a href="{{ url_for('student_notices') }}" class="nav-link">
+            Notices
+        </a>
+
+        <div class="section-title">ACCOUNT</div>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            Logout
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <div class="top">
+            <h1>Attendance</h1>
+            <p>View your attendance records and status.</p>
+        </div>
+
+        <div class="card">
+
+            {% if attendance %}
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Student Name</th>
+                        <th>Roll No.</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for record in attendance %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ record.attendance_date }}</td>
+                        <td>{{ record.full_name }}</td>
+                        <td>{{ record.roll_no }}</td>
+                        <td>
+                            {% if record.status|lower == 'present' %}
+                                <span class="present">Present</span>
+                            {% else %}
+                                <span class="absent">{{ record.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                <h3>No Attendance Records</h3>
+                <p>Your attendance records will appear here.</p>
+            </div>
+
+            {% endif %}
+
+            <a href="{{ url_for('student_dashboard') }}" class="back">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

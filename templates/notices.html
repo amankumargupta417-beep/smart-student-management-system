@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notices - Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 35px 50px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .brand {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .user-info {
+            text-align: right;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .user-info strong {
+            font-size: 15px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 40px;
+            color: #111827;
+        }
+
+        .header p {
+            margin-top: 8px;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            text-decoration: none;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-back {
+            background: #111827;
+            color: white;
+        }
+
+        .btn-add {
+            background: #149ee9;
+            color: white;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border-left: 5px solid #149ee9;
+        }
+
+        .notice-title {
+            font-size: 21px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .notice-message {
+            color: #4b5563;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .notice-date {
+            margin-top: 15px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .empty {
+            background: white;
+            border-radius: 18px;
+            padding: 50px;
+            text-align: center;
+            color: #6b7280;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+
+        @media (max-width: 768px) {
+            .page {
+                padding: 25px 18px;
+            }
+
+            .topbar,
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+            }
+
+            .user-info {
+                text-align: left;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="topbar">
+        <div class="brand">
+            Smart Student Management System
+        </div>
+
+        <div class="user-info">
+            <strong>{{ user_name }}</strong><br>
+            {{ role }}
+        </div>
+    </div>
+
+    <div class="header">
+        <div>
+            <h1>Notices</h1>
+            <p>View and manage important academic notices.</p>
+        </div>
+
+        <div class="buttons">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-back">
+                ← Back to Dashboard
+            </a>
+
+            <a href="{{ url_for('add_notice') }}" class="btn btn-add">
+                + Add Notice
+            </a>
+        </div>
+    </div>
+
+    {% if notices %}
+
+        {% for notice in notices %}
+
+        <div class="notice-card">
+
+            <div class="notice-title">
+                {{ notice.title }}
+            </div>
+
+            <div class="notice-message">
+                {{ notice.message }}
+            </div>
+
+            <div class="notice-date">
+                Posted on: {{ notice.created_at }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h3>No notices available</h3>
+            <p>There are currently no notices to display.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

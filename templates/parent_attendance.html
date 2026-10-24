@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parent Attendance | Smart Student Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #1e293b;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #0f172a;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            padding-left: 10px;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .nav-link {
+            display: block;
+            text-decoration: none;
+            color: #cbd5e1;
+            padding: 13px 15px;
+            margin: 7px 0;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .topbar {
+            background: white;
+            padding: 18px 25px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+        }
+
+        .topbar h2 {
+            font-size: 22px;
+        }
+
+        .user {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .page-header {
+            margin-bottom: 22px;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #64748b;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475569;
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .present {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .absent {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 11px 18px;
+            background: #0f172a;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+        }
+
+        .back-btn:hover {
+            background: #1e293b;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 18px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo">
+            Smart <span>Student</span>
+        </div>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            🏠 Dashboard
+        </a>
+
+        <a href="{{ url_for('parent_attendance') }}" class="nav-link active">
+            📅 Attendance
+        </a>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            📝 Marks
+        </a>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            📊 Performance
+        </a>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            🔔 Notices
+        </a>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            👤 Child Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            🚪 Logout
+        </a>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="topbar">
+            <h2>Attendance</h2>
+
+            <div class="user">
+                Welcome, {{ user_name }}
+            </div>
+        </div>
+
+
+        <div class="page-header">
+            <h1>Child Attendance</h1>
+            <p>View your child's attendance records.</p>
+        </div>
+
+
+        <div class="card">
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Student Name</th>
+                            <th>Roll No.</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in attendance %}
+
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                {{ record.attendance_date }}
+                            </td>
+
+                            <td>
+                                {{ record.full_name }}
+                            </td>
+
+                            <td>
+                                {{ record.roll_no }}
+                            </td>
+
+                            <td>
+
+                                {% if record.status|lower == "present" %}
+
+                                    <span class="status present">
+                                        Present
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status absent">
+                                        {{ record.status }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="5" class="empty">
+                                No attendance records found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <a href="{{ url_for('parent_dashboard') }}" class="back-btn">
+                ← Back to Dashboard
+            </a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

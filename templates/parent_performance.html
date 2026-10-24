@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance | Smart Student Management System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 25px 18px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: #2196f3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand h2 {
+            font-size: 17px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 3px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 13px 14px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: #2196f3;
+            color: white;
+        }
+
+        .nav-link i {
+            font-size: 17px;
+        }
+
+        .content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .topbar p {
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .user-box {
+            text-align: right;
+        }
+
+        .user-box strong {
+            display: block;
+        }
+
+        .user-box span {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .performance-header h2 {
+            font-size: 20px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #eef2ff;
+            color: #2563eb;
+            padding: 10px 15px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+        }
+
+        .summary-card .icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .summary-card h3 {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 16px 14px;
+            border-bottom: 1px solid #eef2f7;
+            font-size: 14px;
+        }
+
+        .student-name {
+            font-weight: bold;
+        }
+
+        .percentage {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .progress {
+            width: 150px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #2196f3;
+            border-radius: 20px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .content {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .topbar {
+                display: block;
+            }
+
+            .user-box {
+                text-align: left;
+                margin-top: 15px;
+            }
+
+            .performance-header {
+                display: block;
+            }
+
+            .back-btn {
+                display: inline-block;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo">SS</div>
+            <div>
+                <h2>Smart Student</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+
+        <div class="menu-title">PARENT PANEL</div>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            <i class="bi bi-grid-fill"></i>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('parent_child') }}" class="nav-link">
+            <i class="bi bi-person-fill"></i>
+            Child Profile
+        </a>
+
+        <a href="{{ url_for('parent_attendance') }}" class="nav-link">
+            <i class="bi bi-check-circle-fill"></i>
+            Attendance
+        </a>
+
+        <a href="{{ url_for('parent_marks') }}" class="nav-link">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            Marks
+        </a>
+
+        <a href="{{ url_for('parent_performance') }}" class="nav-link active">
+            <i class="bi bi-bar-chart-fill"></i>
+            Performance
+        </a>
+
+        <a href="{{ url_for('parent_notices') }}" class="nav-link">
+            <i class="bi bi-bell-fill"></i>
+            Notices
+        </a>
+
+        <div class="menu-title" style="margin-top: 30px;">ACCOUNT</div>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+
+    </aside>
+
+    <main class="content">
+
+        <div class="topbar">
+            <div>
+                <h1>Performance</h1>
+                <p>Track your child's overall academic performance</p>
+            </div>
+
+            <div class="user-box">
+                <strong>{{ user_name }}</strong>
+                <span>{{ role }}</span>
+            </div>
+        </div>
+
+        {% set total_obtained = performance[0].obtained if performance else 0 %}
+        {% set total_maximum = performance[0].maximum if performance else 0 %}
+
+        <div class="summary">
+
+            <div class="summary-card">
+                <div class="icon">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+                <h3>
+                    {% if performance %}
+                        {{ performance[0].full_name }}
+                    {% else %}
+                        No Student
+                    {% endif %}
+                </h3>
+                <p>Student Name</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="icon">
+                    <i class="bi bi-award-fill"></i>
+                </div>
+                <h3>
+                    {% if performance and total_maximum %}
+                        {{ "%.1f"|format((total_obtained / total_maximum) * 100) }}%
+                    {% else %}
+                        0%
+                    {% endif %}
+                </h3>
+                <p>Overall Performance</p>
+            </div>
+
+            <div class="summary-card">
+                <div class="icon">
+                    <i class="bi bi-book-fill"></i>
+                </div>
+                <h3>{{ performance|length }}</h3>
+                <p>Performance Records</p>
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="performance-header">
+                <div>
+                    <h2>Academic Performance</h2>
+                </div>
+
+                <a href="{{ url_for('parent_dashboard') }}" class="back-btn">
+                    <i class="bi bi-arrow-left"></i>
+                    Back to Dashboard
+                </a>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Student Name</th>
+                            <th>Roll No.</th>
+                            <th>Marks Obtained</th>
+                            <th>Maximum Marks</th>
+                            <th>Percentage</th>
+                            <th>Progress</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in performance %}
+
+                        {% set percentage = (record.obtained / record.maximum * 100) if record.maximum else 0 %}
+
+                        <tr>
+                            <td>{{ loop.index }}</td>
+
+                            <td class="student-name">
+                                {{ record.full_name }}
+                            </td>
+
+                            <td>
+                                {{ record.roll_no }}
+                            </td>
+
+                            <td>
+                                {{ "%.1f"|format(record.obtained) }}
+                            </td>
+
+                            <td>
+                                {{ "%.1f"|format(record.maximum) }}
+                            </td>
+
+                            <td class="percentage">
+                                {{ "%.1f"|format(percentage) }}%
+                            </td>
+
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                         style="width: {{ percentage }}%;">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% else %}
+
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty">
+                                    <i class="bi bi-bar-chart" style="font-size:35px;"></i>
+                                    <p style="margin-top:10px;">
+                                        No performance records available.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+</html>

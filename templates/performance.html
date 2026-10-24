@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance - Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 250px;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 5px 10px 35px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: #0ea5e9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .brand h2 {
+            font-size: 18px;
+        }
+
+        .brand p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 15px 10px 10px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d1d5db;
+            padding: 13px 15px;
+            margin: 5px 0;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .menu a:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .menu a.active {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 75px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 35px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .profile strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .profile span {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+        .back-btn {
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-size: 14px;
+        }
+
+        .back-btn:hover {
+            background: #1f2937;
+        }
+
+        /* SUMMARY */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .summary-card h4 {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .summary-card .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .summary-card p {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        /* TABLE */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+        }
+
+        .card-header {
+            margin-bottom: 20px;
+        }
+
+        .card-header h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            background: #f8fafc;
+            color: #475569;
+            font-size: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #eef0f3;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .student-name {
+            font-weight: bold;
+            color: #111827;
+        }
+
+        .percentage {
+            font-weight: bold;
+            color: #0284c7;
+        }
+
+        .progress {
+            width: 140px;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #0ea5e9;
+            border-radius: 10px;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #6b7280;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                width: calc(100% - 210px);
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="logo">SS</div>
+            <div>
+                <h2>Student</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <div class="menu">
+            <a href="{{ url_for('dashboard') }}">▣ &nbsp; Dashboard</a>
+            <a href="{{ url_for('admin_students') }}">🎓 &nbsp; Students</a>
+            <a href="{{ url_for('admin_teachers') }}">▣ &nbsp; Teachers</a>
+        </div>
+
+        <div class="menu-title">ACADEMIC</div>
+
+        <div class="menu">
+            <a href="{{ url_for('admin_attendance') }}">✓ &nbsp; Attendance</a>
+            <a href="{{ url_for('admin_marks') }}">▣ &nbsp; Marks</a>
+            <a href="{{ url_for('admin_performance') }}" class="active">▥ &nbsp; Performance</a>
+            <a href="{{ url_for('admin_notices') }}">📢 &nbsp; Notices</a>
+        </div>
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <div class="menu">
+            <a href="{{ url_for('logout') }}">↪ &nbsp; Logout</a>
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <div class="topbar">
+            <div class="profile">
+                <div class="avatar">S</div>
+                <div>
+                    <strong>{{ user_name }}</strong>
+                    <span>{{ role }}</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Performance</h1>
+                    <p>Track and analyze student academic performance.</p>
+                </div>
+
+                <a href="{{ url_for('dashboard') }}" class="back-btn">
+                    ← Back to Dashboard
+                </a>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="summary">
+
+                <div class="summary-card">
+                    <h4>Total Students With Marks</h4>
+                    <div class="number">{{ performance|length }}</div>
+                    <p>Students included in performance analysis</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>Total Marks Records</h4>
+                    <div class="number">
+                        {{ performance|length }}
+                    </div>
+                    <p>Academic performance records</p>
+                </div>
+
+                <div class="summary-card">
+                    <h4>Performance Tracking</h4>
+                    <div class="number">Active</div>
+                    <p>Marks-based performance monitoring</p>
+                </div>
+
+            </div>
+
+            <!-- PERFORMANCE TABLE -->
+            <div class="card">
+
+                <div class="card-header">
+                    <h2>Student Performance</h2>
+                    <p>Overall marks performance of students</p>
+                </div>
+
+                <div class="table-wrapper">
+
+                    {% if performance %}
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Student Name</th>
+                                <th>Roll No.</th>
+                                <th>Marks Obtained</th>
+                                <th>Maximum Marks</th>
+                                <th>Percentage</th>
+                                <th>Progress</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for student in performance %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td class="student-name">
+                                    {{ student.full_name }}
+                                </td>
+
+                                <td>
+                                    {{ student.roll_no }}
+                                </td>
+
+                                <td>
+                                    {{ "%.1f"|format(student.obtained) }}
+                                </td>
+
+                                <td>
+                                    {{ "%.1f"|format(student.maximum) }}
+                                </td>
+
+                                <td class="percentage">
+                                    {% if student.maximum and student.maximum > 0 %}
+                                        {{ "%.1f"|format((student.obtained / student.maximum) * 100) }}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+
+                                <td>
+
+                                    {% if student.maximum and student.maximum > 0 %}
+
+                                        <div class="progress">
+                                            <div
+                                                class="progress-bar"
+                                                style="width: {{ (student.obtained / student.maximum * 100) if (student.obtained / student.maximum * 100) <= 100 else 100 }}%;">
+                                            </div>
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="progress">
+                                            <div class="progress-bar" style="width: 0%;"></div>
+                                        </div>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    {% else %}
+
+                    <div class="empty">
+                        No performance records available yet.
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

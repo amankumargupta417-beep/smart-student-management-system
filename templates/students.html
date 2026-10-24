@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Students | Smart Student Management System</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            padding: 35px;
+        }
+
+        .top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            color: #7b8494;
+            margin-top: 7px;
+        }
+
+        .add-btn {
+            background: #1597e5;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #1261d6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid #edf0f5;
+        }
+
+        th {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .student-name {
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #e8f3ff;
+            color: #1683d8;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #8a94a6;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1597e5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 800px) {
+
+            .page {
+                padding: 20px;
+            }
+
+            .top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .card {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 700px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <!-- BACK TO DASHBOARD -->
+
+    <a href="{{ url_for('dashboard') }}" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+
+    <!-- HEADER -->
+
+    <div class="top">
+
+        <div>
+
+            <h1>Students</h1>
+
+            <div class="subtitle">
+                Manage student records and information
+            </div>
+
+        </div>
+
+
+        <!-- ADD STUDENT BUTTON -->
+
+        <a href="{{ url_for('add_student') }}" class="add-btn">
+            + Add Student
+        </a>
+
+    </div>
+
+
+    <!-- STUDENTS TABLE -->
+
+    <div class="card">
+
+        {% if students %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Student Name</th>
+
+                    <th>Username</th>
+
+                    <th>Roll No.</th>
+
+                    <th>Class</th>
+
+                    <th>Section</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>
+                        {{ loop.index }}
+                    </td>
+
+
+                    <td>
+
+                        <div class="student-name">
+                            {{ student.full_name or 'N/A' }}
+                        </div>
+
+                    </td>
+
+
+                    <td>
+                        {{ student.username or 'N/A' }}
+                    </td>
+
+
+                    <td>
+                        {{ student.roll_no or 'N/A' }}
+                    </td>
+
+
+                    <td>
+                        {{ student.class_name or 'N/A' }}
+                    </td>
+
+
+                    <td>
+                        {{ student.section or 'N/A' }}
+                    </td>
+
+
+                    <td>
+
+                        <span class="badge">
+                            Active
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No Students Found</h3>
+
+            <p>
+                Add your first student using the
+                <strong>+ Add Student</strong> button.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

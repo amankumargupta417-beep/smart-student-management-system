@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Teachers | Smart Student Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #202124;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            padding-left: 8px;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: #4da3ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text h2 {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #bdbdbd;
+        }
+
+        .menu-title {
+            color: #777;
+            font-size: 11px;
+            margin: 22px 10px 10px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d6d6d6;
+            padding: 13px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #398fe8;
+            color: white;
+        }
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 78px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            color: #202124;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #4da3ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .user-info span {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .content {
+            padding: 30px 35px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-header p {
+            color: #777;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #398fe8;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background: #247bcf;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            background: #f7f9fc;
+            color: #555;
+            font-size: 13px;
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #e6e9ef;
+        }
+
+        td {
+            padding: 16px 15px;
+            border-bottom: 1px solid #eef0f4;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafcff;
+        }
+
+        .teacher-name {
+            font-weight: bold;
+            color: #222;
+        }
+
+        .username {
+            color: #777;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            background: #e6f7ed;
+            color: #198754;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #398fe8;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 45px 20px;
+            color: #777;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                height: 70px;
+            }
+
+            .topbar h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-box">SS</div>
+
+            <div class="logo-text">
+                <h2>Smart Student</h2>
+                <p>Management System</p>
+            </div>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 &nbsp; Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_students') }}">
+                👨‍🎓 &nbsp; Students
+            </a>
+
+            <a href="{{ url_for('admin_teachers') }}" class="active">
+                👨‍🏫 &nbsp; Teachers
+            </a>
+
+            <a href="{{ url_for('admin_parents') }}">
+                👨‍👩‍👧 &nbsp; Parents
+            </a>
+
+        </div>
+
+        <div class="menu-title">Academic</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('admin_attendance') }}">
+                📋 &nbsp; Attendance
+            </a>
+
+            <a href="{{ url_for('admin_marks') }}">
+                📝 &nbsp; Marks
+            </a>
+
+            <a href="{{ url_for('admin_performance') }}">
+                📊 &nbsp; Performance
+            </a>
+
+            <a href="{{ url_for('admin_notices') }} ">
+                📢 &nbsp; Notices
+            </a>
+
+        </div>
+
+        <div class="menu-title">Account</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('logout') }}">
+                🚪 &nbsp; Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <h1>Teachers</h1>
+
+            <div class="user-box">
+
+                <div class="avatar">
+                    {{ user_name[0] if user_name else "A" }}
+                </div>
+
+                <div class="user-info">
+                    <strong>{{ user_name or "Administrator" }}</strong>
+                    <span>{{ role or "Administrator" }}</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <a href="{{ url_for('dashboard') }}" class="back-btn">
+                ← Back to Dashboard
+            </a>
+
+            <div class="page-header">
+
+                <div>
+                    <h2>Manage Teachers</h2>
+                    <p>Add, view and manage teacher information.</p>
+                </div>
+
+                <a href="{{ url_for('add_teacher') }}" class="add-btn">
+                    + Add Teacher
+                </a>
+
+            </div>
+
+
+            <div class="card">
+
+                {% if teachers %}
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Teacher Name</th>
+                            <th>Username</th>
+                            <th>Employee ID</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for teacher in teachers %}
+
+                        <tr>
+
+                            <td>{{ loop.index }}</td>
+
+                            <td>
+                                <div class="teacher-name">
+                                    {{ teacher.full_name }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="username">
+                                    {{ teacher.username }}
+                                </div>
+                            </td>
+
+                            <td>
+                                {{ teacher.employee_id or "-" }}
+                            </td>
+
+                            <td>
+                                {{ teacher.subject or "-" }}
+                            </td>
+
+                            <td>
+                                <span class="badge">
+                                    Active
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {% else %}
+
+                <div class="empty-message">
+
+                    <h3>No Teachers Found</h3>
+
+                    <p>
+                        No teacher records are available yet.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

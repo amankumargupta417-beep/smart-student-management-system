@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Notice - Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #222;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .top {
+            margin-bottom: 25px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #1683e8;
+            font-weight: 600;
+        }
+
+        h1 {
+            margin: 15px 0 5px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: 600;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d5dbe3;
+            border-radius: 7px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #1683e8;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #c62828;
+            border: 1px solid #f0b5b5;
+            padding: 13px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            background: #1683e8;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #096dcc;
+        }
+
+        .cancel {
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+        <a class="back" href="{{ url_for('admin_notices') }}">
+            ← Back to Notices
+        </a>
+
+        <h1>Add Notice</h1>
+        <div class="subtitle">
+            Create a new academic notice for students and teachers.
+        </div>
+    </div>
+
+    <div class="card">
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <label for="title">Notice Title *</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Enter notice title"
+                required
+            >
+
+            <label for="message">Notice Message *</label>
+            <textarea
+                id="message"
+                name="message"
+                placeholder="Write your notice here..."
+                required
+            ></textarea>
+
+            <div class="buttons">
+                <button type="submit">Save Notice</button>
+
+                <a class="cancel" href="{{ url_for('admin_notices') }}">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

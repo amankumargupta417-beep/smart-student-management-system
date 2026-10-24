@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Notices</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding-top: 25px;
+        }
+
+        .logo {
+            padding: 15px 30px 30px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logo small {
+            font-size: 13px;
+            color: #9ca3af;
+        }
+
+        .nav a {
+            display: block;
+            padding: 16px 30px;
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .notice {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        }
+
+        .notice h2 {
+            margin-top: 0;
+            color: #111827;
+        }
+
+        .notice p {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .date {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .empty {
+            background: white;
+            border-radius: 16px;
+            padding: 50px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">
+        SS<br>
+        <small>Smart Student</small>
+    </div>
+
+    <div class="nav">
+        <a href="{{ url_for('student_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('student_attendance') }}">Attendance</a>
+        <a href="{{ url_for('student_marks') }}">Marks</a>
+        <a href="{{ url_for('student_performance') }}">Performance</a>
+        <a href="{{ url_for('student_notices') }}" class="active">Notices</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</div>
+
+<div class="content">
+
+    <h1>Notices</h1>
+    <p class="subtitle">Important announcements and notices.</p>
+
+    {% if notices %}
+
+        {% for notice in notices %}
+
+        <div class="notice">
+            <h2>{{ notice.title }}</h2>
+
+            <p>
+                {{ notice.message }}
+            </p>
+
+            <div class="date">
+                {{ notice.created_at }}
+            </div>
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h2>No Notices</h2>
+            <p>Important notices will appear here.</p>
+        </div>
+
+    {% endif %}
+
+    <a class="back" href="{{ url_for('student_dashboard') }}">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

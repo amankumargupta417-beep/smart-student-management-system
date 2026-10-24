@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student | Smart Student Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 25px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1683d8;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .title {
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            color: #7b8494;
+            margin-top: 8px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input {
+            padding: 13px 15px;
+            border: 1px solid #d9dee8;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1597e5;
+            box-shadow: 0 0 0 3px rgba(21,151,229,0.10);
+        }
+
+        .buttons {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 24px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .save {
+            background: #1597e5;
+            color: white;
+        }
+
+        .cancel {
+            background: #eef1f5;
+            color: #374151;
+        }
+
+        .error {
+            background: #feecec;
+            color: #c62828;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <a href="{{ url_for('admin_students') }}" class="back">
+        ← Back to Students
+    </a>
+
+    <div class="title">
+        <h1>Add Student</h1>
+        <div class="subtitle">
+            Create a new student account and profile
+        </div>
+    </div>
+
+    <div class="card">
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+                    <label>Full Name</label>
+                    <input
+                        type="text"
+                        name="full_name"
+                        placeholder="Enter student's full name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Roll Number</label>
+                    <input
+                        type="text"
+                        name="roll_no"
+                        placeholder="Example: 102"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Class</label>
+                    <input
+                        type="text"
+                        name="class_name"
+                        placeholder="Example: BCA 3rd Year"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>Section</label>
+                    <input
+                        type="text"
+                        name="section"
+                        placeholder="Example: A"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="buttons">
+                <button type="submit" class="btn save">
+                    Save Student
+                </button>
+
+                <a
+                    href="{{ url_for('admin_students') }}"
+                    class="btn cancel"
+                >
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

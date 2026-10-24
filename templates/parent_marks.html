@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parent Marks | Smart Student</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 30px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            padding-left: 10px;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .nav-link {
+            display: block;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 14px 12px;
+            margin-bottom: 8px;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .nav-link:hover,
+        .active {
+            background: #1f2937;
+            color: white;
+        }
+
+        .nav-icon {
+            display: inline-block;
+            width: 28px;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .welcome {
+            color: #6b7280;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #374151;
+            text-align: left;
+            padding: 16px;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        .percentage {
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 18px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+        }
+
+        .back-btn:hover {
+            background: #1f2937;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+
+        <div class="logo">
+            Smart <span>Student</span>
+        </div>
+
+        <a href="{{ url_for('parent_dashboard') }}" class="nav-link">
+            <span class="nav-icon">🏠</span>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('parent_attendance') }}" class="nav-link">
+            <span class="nav-icon">📅</span>
+            Attendance
+        </a>
+
+        <a href="{{ url_for('parent_marks') }}" class="nav-link active">
+            <span class="nav-icon">📄</span>
+            Marks
+        </a>
+
+        <a href="{{ url_for('parent_performance') }}" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Performance
+        </a>
+
+        <a href="{{ url_for('parent_notices') }}" class="nav-link">
+            <span class="nav-icon">🔔</span>
+            Notices
+        </a>
+
+        <a href="{{ url_for('parent_child') }}" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Child Profile
+        </a>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <span class="nav-icon">🚪</span>
+            Logout
+        </a>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="topbar">
+            <h1>Marks</h1>
+
+            <div class="welcome">
+                Welcome, {{ user_name }}
+            </div>
+        </div>
+
+
+        <div class="page-header">
+            <h2>Child Marks</h2>
+            <p>View your child's examination and academic marks.</p>
+        </div>
+
+
+        <div class="card">
+
+            {% if marks %}
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Exam</th>
+                        <th>Subject</th>
+                        <th>Student Name</th>
+                        <th>Roll No.</th>
+                        <th>Marks</th>
+                        <th>Percentage</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for mark in marks %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+
+                        <td>
+                            <span class="badge">
+                                {{ mark.exam_name }}
+                            </span>
+                        </td>
+
+                        <td>{{ mark.subject }}</td>
+
+                        <td>{{ mark.full_name }}</td>
+
+                        <td>{{ mark.roll_no }}</td>
+
+                        <td>
+                            {{ "%.1f"|format(mark.marks_obtained) }}
+                            /
+                            {{ "%.1f"|format(mark.max_marks) }}
+                        </td>
+
+                        <td class="percentage">
+                            {{ "%.1f"|format((mark.marks_obtained / mark.max_marks) * 100) }}%
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <div class="empty">
+                No marks records found.
+            </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <a href="{{ url_for('parent_dashboard') }}" class="back-btn">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Parent Dashboard | Smart Student Management System</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            padding: 24px 15px;
+            color: white;
+            z-index: 1000;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 10px 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-text h4 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .logo-text small {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 18px 12px 10px;
+        }
+
+        .nav-link {
+            color: #d1d5db;
+            padding: 12px 14px;
+            border-radius: 9px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            background: #1f2937;
+            color: white;
+        }
+
+        .nav-link.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .topbar-title h5 {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .topbar-title small {
+            color: #6b7280;
+        }
+
+        .profile-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .profile-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .profile-info small {
+            color: #6b7280;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            right: -50px;
+            top: -70px;
+        }
+
+        .welcome-card h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .welcome-card p {
+            margin: 0;
+            color: #dbeafe;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            height: 100%;
+            box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+        }
+
+        .blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .green {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .orange {
+            background: #ffedd5;
+            color: #ea580c;
+        }
+
+        .purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .stat-card h3 {
+            margin: 18px 0 4px;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 2px 8px rgba(15,23,42,0.03);
+            height: 100%;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h5 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .panel-header span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 18px;
+        }
+
+        .student-avatar {
+            width: 58px;
+            height: 58px;
+            border-radius: 14px;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .student-info h4 {
+            margin: 0 0 4px;
+            font-size: 17px;
+        }
+
+        .student-info p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #6b7280;
+        }
+
+        .info-value {
+            font-weight: 600;
+        }
+
+        .notice-item {
+            padding: 13px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-item h6 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .notice-item p {
+            font-size: 12px;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .notice-date {
+            font-size: 11px;
+            color: #2563eb;
+            margin-top: 5px;
+        }
+
+        .progress-wrap {
+            margin-bottom: 18px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 10px;
+            background: #e5e7eb;
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .main-content {
+                margin-left: 220px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo-area">
+            <div class="logo">SS</div>
+
+            <div class="logo-text">
+                <h4>Smart Student</h4>
+                <small>Management System</small>
+            </div>
+        </div>
+
+        <div class="menu-title">Parent Panel</div>
+
+        <a href="#" class="nav-link active">
+            <span class="nav-icon">▦</span>
+            Dashboard
+        </a>
+
+        <a href="{{ url_for('parent_child') }}" class="nav-link">
+            <span class="nav-icon">👤</span>
+            Child Profile
+        </a>
+
+        <a href="{{ url_for('parent_attendance') }}" class="nav-link">
+            <span class="nav-icon">✓</span>
+            Attendance
+        </a>
+
+        <a href="{{ url_for('parent_marks') }}" class="nav-link">
+            <span class="nav-icon">📝</span>
+            Marks
+        </a>
+
+        <a href="{{ url_for('parent_performance') }}" class="nav-link">
+            <span class="nav-icon">📊</span>
+            Performance
+        </a>
+
+        <a href="{{ url_for('parent_notices') }}" class="nav-link">
+            <span class="nav-icon">🔔</span>
+            Notices
+        </a>
+
+        <div class="menu-title">Account</div>
+
+        <a href="{{ url_for('logout') }}" class="nav-link">
+            <span class="nav-icon">↪</span>
+            Logout
+        </a>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- TOP BAR -->
+        <header class="topbar">
+
+            <div class="topbar-title">
+                <h5>Parent Dashboard</h5>
+                <small>Monitor your child's academic progress</small>
+            </div>
+
+            <div class="profile-box">
+
+                <div class="profile-info text-end">
+                    <strong>{{ user_name or "Parent" }}</strong>
+                    <small>Parent</small>
+                </div>
+
+                <div class="profile-avatar">
+                    P
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+        <section class="content">
+
+            <!-- WELCOME -->
+            <div class="welcome-card">
+
+                <h2>Welcome, {{ user_name or "Parent" }} 👋</h2>
+
+                <p>
+                    Stay updated with your child's attendance,
+                    marks and overall academic performance.
+                </p>
+
+            </div>
+
+
+            <!-- CHILD SUMMARY -->
+            <div class="section-title">
+                Child Overview
+            </div>
+
+            <div class="row g-4 mb-4">
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon blue">👤</div>
+                        </div>
+
+                        <h3>{{ student.full_name if student else "No Child Linked" }}</h3>
+
+                        <p>Student Name</p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon green">✓</div>
+                        </div>
+
+                        <h3>{{ attendance_percentage if attendance_percentage is defined else "92" }}%</h3>
+
+                        <p>Attendance Rate</p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon orange">📝</div>
+                        </div>
+
+                        <h3>{{ average_marks if average_marks is defined else "85" }}%</h3>
+
+                        <p>Average Marks</p>
+
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-md-6">
+                    <div class="stat-card">
+
+                        <div class="stat-top">
+                            <div class="stat-icon purple">📊</div>
+                        </div>
+
+                        <h3>{{ total_subjects if total_subjects is defined else "5" }}</h3>
+
+                        <p>Total Subjects</p>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- CHILD + PERFORMANCE -->
+            <div class="row g-4 mb-4">
+
+                <!-- CHILD INFORMATION -->
+                <div class="col-lg-5">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h5>Child Information</h5>
+                            <span>Profile</span>
+                        </div>
+
+                        <div class="student-info">
+
+                            <div class="student-avatar">
+                                {{ (student.full_name[0] if student else "S")|upper }}
+                            </div>
+
+                            <div>
+                                <h4>
+                                    {{ student.full_name if student else "No Student Linked" }}
+                                </h4>
+
+                                <p>
+                                    Student Academic Profile
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-row">
+                            <span class="info-label">Roll Number</span>
+                            <span class="info-value">
+                                {{ student.roll_no if student else "-" }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">Class</span>
+                            <span class="info-value">
+                                {{ student.class_name if student else "-" }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">Section</span>
+                            <span class="info-value">
+                                {{ student.section if student else "-" }}
+                            </span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="info-label">Status</span>
+                            <span class="badge bg-success">
+                                Active
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PERFORMANCE -->
+                <div class="col-lg-7">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h5>Academic Performance</h5>
+                            <span>Current Overview</span>
+                        </div>
+
+                        <canvas id="performanceChart" height="130"></canvas>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ATTENDANCE + NOTICES -->
+            <div class="row g-4">
+
+                <!-- ATTENDANCE -->
+                <div class="col-lg-6">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h5>Attendance Summary</h5>
+                            <span>This Academic Year</span>
+                        </div>
+
+                        <div class="progress-wrap">
+
+                            <div class="progress-label">
+                                <span>Overall Attendance</span>
+                                <strong>
+                                    {{ attendance_percentage if attendance_percentage is defined else "92" }}%
+                                </strong>
+                            </div>
+
+                            <div class="progress">
+                                <div
+                                    class="progress-bar bg-success"
+                                    style="width: {{ attendance_percentage if attendance_percentage is defined else 92 }}%;">
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row text-center mt-4">
+
+                            <div class="col-4">
+                                <h4 class="fw-bold text-success">
+                                    {{ present_days if present_days is defined else "110" }}
+                                </h4>
+                                <small class="text-muted">Present</small>
+                            </div>
+
+                            <div class="col-4">
+                                <h4 class="fw-bold text-danger">
+                                    {{ absent_days if absent_days is defined else "10" }}
+                                </h4>
+                                <small class="text-muted">Absent</small>
+                            </div>
+
+                            <div class="col-4">
+                                <h4 class="fw-bold">
+                                    {{ total_days if total_days is defined else "120" }}
+                                </h4>
+                                <small class="text-muted">Total Days</small>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NOTICES -->
+                <div class="col-lg-6">
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+                            <h5>Latest Notices</h5>
+                            <span>School Updates</span>
+                        </div>
+
+                        {% if notices %}
+
+                            {% for notice in notices[:4] %}
+
+                                <div class="notice-item">
+
+                                    <h6>
+                                        {{ notice.title }}
+                                    </h6>
+
+                                    <p>
+                                        {{ notice.message }}
+                                    </p>
+
+                                    <div class="notice-date">
+                                        {{ notice.created_at }}
+                                    </div>
+
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                           <div class="notice-item">
+
+                                    <h6>Welcome to Smart Student Management System</h6>
+
+                                    <p>
+                                        Parents can monitor attendance,
+                                        marks and academic performance here.
+                                    </p>
+
+                                    <div class="notice-date">
+                                        Latest Update
+                                    </div>
+
+                                </div>
+
+                            <div class="notice-item">
+
+                                <h6>Academic Performance Update</h6>
+
+                                <p>
+                                    Regularly check your child's
+                                    academic progress and attendance.
+                                </p>
+
+                                <div class="notice-date">
+                                    School Notice
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-note">
+                Smart Student Management System • Parent Portal
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- CHART -->
+    <script>
+
+        const performanceCanvas =
+            document.getElementById("performanceChart");
+
+        new Chart(performanceCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Mathematics",
+                    "Computer",
+                    "English",
+                    "DBMS",
+                    "Programming"
+                ],
+
+                datasets: [{
+                    label: "Marks (%)",
+
+                    data: [
+                        85,
+                        90,
+                        78,
+                        88,
+                        92
+                    ],
+
+                    borderRadius: 8,
+
+                    barThickness: 30
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+
+                scales: {
+
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+
+                }
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

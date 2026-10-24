@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Teacher | Smart Student Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #202124;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 245px;
+            height: 100vh;
+            background: #202124;
+            color: white;
+            padding: 25px 18px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            padding-left: 8px;
+        }
+
+        .logo-box {
+            width: 45px;
+            height: 45px;
+            background: #4da3ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .logo-text h2 {
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #bdbdbd;
+        }
+
+        .menu-title {
+            color: #777;
+            font-size: 11px;
+            margin: 22px 10px 10px;
+            text-transform: uppercase;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            color: #d6d6d6;
+            padding: 13px 14px;
+            margin: 5px 0;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #398fe8;
+            color: white;
+        }
+
+        .main {
+            margin-left: 245px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 78px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 35px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .topbar h1 {
+            font-size: 27px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #4da3ff;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .user-info span {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .content {
+            padding: 30px 35px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #398fe8;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h2 {
+            font-size: 25px;
+            margin-bottom: 7px;
+        }
+
+        .page-header p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .form-card {
+            background: white;
+            max-width: 850px;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #dfe3e8;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #398fe8;
+            box-shadow: 0 0 0 3px rgba(57, 143, 232, 0.1);
+        }
+
+        .hint {
+            margin-top: 6px;
+            font-size: 11px;
+            color: #888;
+        }
+
+        .error {
+            background: #fff0f0;
+            color: #d93025;
+            border: 1px solid #ffd1d1;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 28px;
+            padding-top: 22px;
+            border-top: 1px solid #eee;
+        }
+
+        .save-btn {
+            border: none;
+            background: #398fe8;
+            color: white;
+            padding: 13px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #247bcf;
+        }
+
+        .cancel-btn {
+            text-decoration: none;
+            background: #f1f3f5;
+            color: #555;
+            padding: 13px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e7eb;
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 200px;
+            }
+
+            .main {
+                margin-left: 200px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .topbar {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .sidebar {
+                display: none;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar h1 {
+                font-size: 21px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-box">
+                SS
+            </div>
+
+            <div class="logo-text">
+                <h2>Smart Student</h2>
+                <p>Management System</p>
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            Main Menu
+        </div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('dashboard') }}">
+                🏠 &nbsp; Dashboard
+            </a>
+
+            <a href="{{ url_for('admin_students') }}">
+                👨‍🎓 &nbsp; Students
+            </a>
+
+            <a href="{{ url_for('admin_teachers') }}" class="active">
+                👨‍🏫 &nbsp; Teachers
+            </a>
+
+            <a href="#">
+                👨‍👩‍👧 &nbsp; Parents
+            </a>
+
+        </div>
+
+
+        <div class="menu-title">
+            Academic
+        </div>
+
+        <div class="menu">
+
+            <a href="#">
+                📋 &nbsp; Attendance
+            </a>
+
+            <a href="#">
+                📝 &nbsp; Marks
+            </a>
+
+            <a href="#">
+                📊 &nbsp; Performance
+            </a>
+
+            <a href="#">
+                📢 &nbsp; Notices
+            </a>
+
+        </div>
+
+
+        <div class="menu-title">
+            Account
+        </div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('logout') }}">
+                🚪 &nbsp; Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <h1>Add Teacher</h1>
+
+            <div class="user-box">
+
+                <div class="avatar">
+                    {{ user_name[0] if user_name else "A" }}
+                </div>
+
+                <div class="user-info">
+
+                    <strong>
+                        {{ user_name or "Administrator" }}
+                    </strong>
+
+                    <span>
+                        {{ role or "Administrator" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <section class="content">
+
+            <a
+                href="{{ url_for('admin_teachers') }}"
+                class="back-btn"
+            >
+                ← Back to Teachers
+            </a>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Add New Teacher
+                </h2>
+
+                <p>
+                    Create a teacher account and add professional details.
+                </p>
+
+            </div>
+
+
+            <div class="form-card">
+
+
+                {% if error %}
+
+                <div class="error">
+                    {{ error }}
+                </div>
+
+                {% endif %}
+
+
+                <form
+                    method="POST"
+                    action="{{ url_for('add_teacher') }}"
+                >
+
+                    <div class="form-grid">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="form-group">
+
+                            <label for="full_name">
+                                Full Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="full_name"
+                                name="full_name"
+                                placeholder="Enter teacher full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- USERNAME -->
+
+                        <div class="form-group">
+
+                            <label for="username">
+                                Username *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Enter login username"
+                                required
+                            >
+
+                            <span class="hint">
+                                This username will be used for teacher login.
+                            </span>
+
+                        </div>
+
+
+                        <!-- PASSWORD -->
+
+                        <div class="form-group">
+
+                            <label for="password">
+                                Password *
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                required
+                            >
+
+                        </div>
+
+
+                        <!-- EMPLOYEE ID -->
+
+                        <div class="form-group">
+
+                            <label for="employee_id">
+                                Employee ID
+                            </label>
+
+                            <input
+                                type="text"
+                                id="employee_id"
+                                name="employee_id"
+                                placeholder="Example: T002"
+                            >
+
+                        </div>
+
+
+                        <!-- SUBJECT -->
+
+                        <div class="form-group full">
+
+                            <label for="subject">
+                                Subject
+                            </label>
+
+                            <input
+                                type="text"
+                                id="subject"
+                                name="subject"
+                                placeholder="Example: Computer Science"
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="save-btn"
+                        >
+                            Save Teacher
+                        </button>
+
+                        <a
+                            href="{{ url_for('admin_teachers') }}"
+                            class="cancel-btn"
+                        >
+                            Cancel
+                        </a>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

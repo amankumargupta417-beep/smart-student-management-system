@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - Smart Student Management System</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: #111827;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            padding-left: 8px;
+        }
+
+        .brand-logo {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            background: #0ea5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .menu-title {
+            color: #6b7280;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin: 22px 12px 10px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #d1d5db;
+            text-decoration: none;
+            padding: 13px 14px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: 0.2s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .menu i {
+            font-size: 18px;
+            width: 22px;
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .profile-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .profile-role {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .page-header {
+            margin-bottom: 25px;
+        }
+
+        .page-header h1 {
+            font-size: 34px;
+            font-weight: 750;
+            margin-bottom: 5px;
+        }
+
+        .page-header p {
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .welcome {
+            background: linear-gradient(100deg, #0ea5e9, #2563eb);
+            color: white;
+            padding: 28px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
+        }
+
+        .welcome h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #eef0f4;
+            height: 100%;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 30px;
+            font-weight: 750;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #e0f2fe;
+            color: #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-left: auto;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid #eef0f4;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+            margin-top: 25px;
+        }
+
+        .content-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .content-card .subtitle {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 20px;
+            background: #e5e7eb;
+        }
+
+        .progress-bar {
+            border-radius: 20px;
+            background: #0ea5e9;
+        }
+
+        .notice-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eef0f4;
+        }
+
+        .notice-item:last-child {
+            border-bottom: none;
+        }
+
+        .notice-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .notice-message {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .notice-date {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .table-responsive {
+            border-radius: 12px;
+        }
+
+        table {
+            margin-bottom: 0 !important;
+        }
+
+        th {
+            color: #6b7280 !important;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        .badge-soft {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 210px;
+            }
+
+            .main {
+                margin-left: 210px;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">SS</div>
+
+            <div>
+                <div class="brand-title">Smart Student</div>
+                <div class="brand-subtitle">Management System</div>
+            </div>
+        </div>
+
+        <div class="menu-title">MAIN MENU</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('student_dashboard') }}" class="active">
+                <i class="bi bi-grid-fill"></i>
+                Dashboard
+            </a>
+
+        </div>
+
+        <div class="menu-title">ACADEMIC</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('student_attendance') }}">
+                <i class="bi bi-calendar-check"></i>
+                Attendance
+            </a>
+
+            <a href="{{ url_for('student_marks') }}">
+                <i class="bi bi-bar-chart-fill"></i>
+                Marks
+            </a>
+
+            <a href="{{ url_for('student_performance') }}">
+                <i class="bi bi-graph-up-arrow"></i>
+                Performance
+            </a>
+
+            <a href="{{ url_for('student_notices') }}">
+                <i class="bi bi-megaphone-fill"></i>
+                Notices
+            </a>
+
+        </div>
+
+        <div class="menu-title">ACCOUNT</div>
+
+        <div class="menu">
+
+            <a href="{{ url_for('logout') }}">
+                <i class="bi bi-box-arrow-right"></i>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main">
+
+        <div class="topbar">
+
+            <div class="profile">
+
+                <div class="profile-icon">
+                    {{ (user_name or "S")[0]|upper }}
+                </div>
+
+                <div>
+                    <div class="profile-name">
+                        {{ user_name or "Student" }}
+                    </div>
+
+                    <div class="profile-role">
+                        Student
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="page-header">
+
+            <h1>Student Dashboard</h1>
+
+            <p>
+                View your attendance, marks, performance and important notices.
+            </p>
+
+        </div>
+
+
+        <div class="welcome">
+
+            <h2>
+                Welcome back, {{ student["full_name"] }} 👋
+            </h2>
+
+            <p>
+                Here's an overview of your academic performance.
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+                    <div class="d-flex align-items-center">
+
+                        <div>
+                            <div class="stat-label">
+                                Attendance
+                            </div>
+
+                            <div class="stat-value">
+                                {{ attendance_percentage }}%
+                            </div>
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="bi bi-calendar-check-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+                    <div class="d-flex align-items-center">
+
+                        <div>
+                            <div class="stat-label">
+                                Overall Performance
+                            </div>
+
+                            <div class="stat-value">
+                                {{ total_percentage }}%
+                            </div>
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="bi bi-bar-chart-fill"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="stat-card">
+
+                    <div class="d-flex align-items-center">
+
+                        <div>
+                            <div class="stat-label">
+                                Marks Records
+                            </div>
+
+                            <div class="stat-value">
+                                {{ marks|length }}
+                            </div>
+                        </div>
+
+                        <div class="stat-icon">
+                            <i class="bi bi-journal-text"></i>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="col-lg-7">
+
+                <div class="content-card">
+
+                    <h3>Academic Performance</h3>
+
+                    <div class="subtitle">
+                        Your overall marks performance
+                    </div>
+
+                    <canvas id="performanceChart" height="130"></canvas>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-5">
+
+                <div class="content-card">
+
+                    <h3>Attendance</h3>
+
+                    <div class="subtitle">
+                        Your attendance percentage
+                    </div>
+
+                    <canvas id="attendanceChart" height="180"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="content-card">
+
+            <h3>Recent Marks</h3>
+
+            <div class="subtitle">
+                Your latest academic records
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Subject</th>
+                            <th>Marks</th>
+                            <th>Maximum</th>
+                            <th>Percentage</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% if marks %}
+
+                            {% for mark in marks %}
+
+                            <tr>
+
+                                <td>{{ loop.index }}</td>
+
+                                <td>
+                                    <strong>{{ mark["subject"] }}</strong>
+                                </td>
+
+                                <td>
+                                    {{ "%.1f"|format(mark["marks_obtained"]) }}
+                                </td>
+
+                                <td>
+                                    {{ "%.1f"|format(mark["max_marks"]) }}
+                                </td>
+
+                                <td>
+
+                                    {% set percentage =
+                                        (mark["marks_obtained"] / mark["max_marks"] * 100)
+                                        if mark["max_marks"] else 0
+                                    %}
+
+                                    <span class="badge-soft">
+                                        {{ "%.1f"|format(percentage) }}%
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">
+                                    No marks records available.
+                                </td>
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <div class="content-card">
+
+            <h3>Important Notices</h3>
+
+            <div class="subtitle">
+                Latest announcements
+            </div>
+
+            {% if notices %}
+
+                {% for notice in notices %}
+
+                <div class="notice-item">
+
+                    <div class="notice-title">
+                        {{ notice["title"] }}
+                    </div>
+
+                    <div class="notice-message">
+                        {{ notice["message"] }}
+                    </div>
+
+                    <div class="notice-date">
+                        <i class="bi bi-clock"></i>
+                        {{ notice["created_at"] }}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="text-muted">
+                    No notices available.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const performanceValue = Number("{{ total_percentage }}");
+
+        const attendanceValue = Number("{{ attendance_percentage }}");
+
+
+        new Chart(
+            document.getElementById("performanceChart"),
+            {
+                type: "bar",
+
+                data: {
+                    labels: ["Overall Performance"],
+
+                    datasets: [
+                        {
+                            label: "Percentage",
+
+                            data: [performanceValue]
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            }
+        );
+
+
+        new Chart(
+            document.getElementById("attendanceChart"),
+            {
+                type: "doughnut",
+
+                data: {
+                    labels: ["Present", "Remaining"],
+
+                    datasets: [
+                        {
+                            data: [
+                                attendanceValue,
+                                Math.max(0, 100 - attendanceValue)
+                            ]
+                        }
+                    ]
+                },
+
+                options: {
+                    responsive: true,
+
+                    cutout: "70%",
+
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            }
+        );
+
+    </script>
+
+</body>
+</html>
